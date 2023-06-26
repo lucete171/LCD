@@ -28,15 +28,19 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   d_flip_flop_behavioral_module out_2(.d(b), .clk(clk), .q(b_out), .q_bar(b_bar));
   
   //multiplier with and gate
-  eight_multi MUT(.a(a), .b(b), .out(multi_out));
+  eight_multi_module MUT(.a(a), .b(b), .out(multi_out));
   
   //adder with eight bit adder
+  
   eight_add_module ADD(.a(multi_out), .b(sum), .sum(out), .cout(tmp));
   
-  assign sum = out;
+  always @(posedge clk) begin
+    sum <= out;
+  end 
+  
   
   //accumulator with full adder
-  eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
+  //eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
 
   
 endmodule
