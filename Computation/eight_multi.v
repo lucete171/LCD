@@ -8,7 +8,10 @@ module eight_multi_module(a, b, out);
   
   wire [7:0] cout;
   wire [7:0] multi [0:7];
-  wire [7:0] ? [0:7];
+  wire [7:0] sum [0:7];
+  
+  assign sum[0] = multi[0];
+  assign cout[0] = 1'b0;
   
   //generate partial product
   genvar i, j;
@@ -26,10 +29,10 @@ module eight_multi_module(a, b, out);
     //Add partial product
     for(j=0; j < 8; j = j+1) begin PART_ADD
       eight_add_module ADD(
-      .a(),
-      .b(),
-      .sum(),
-      .cout()
+      .a({cout[i],sum[i][7:1]}),
+      .b(multi[i+1]),
+      .sum(sum[i+1]),
+      .cout(cout[i+1])
       );
     end
   endgenerate
