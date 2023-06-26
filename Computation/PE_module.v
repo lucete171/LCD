@@ -29,7 +29,7 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   eight_multi MUT(.a(a), .b(b), .out(multi_out));
   
   //adder with eight bit adder
-  eight_add_module ADD(.a(mult_out), .b(sum), .sum(sum), .cout(tmp));
+  eight_add_module ADD(.a(multi_out), .b(sum), .sum(sum), .cout(tmp));
   
   //accumulator with full adder
   //eight_bit_register
