@@ -29,7 +29,7 @@ module eight_multi_module(a, b, out);
     end
     
     //Add partial product
-    for(i=0; i < 8; i = i+1) begin PART_ADD
+    for(i=0; i < 8; i = i+1) begin :PART_ADD
       eight_add_module ADD(
       .a({cout[i],part_sum[i][7:1]}), // cout is position in max element position
       .b(multi[i+1]),
