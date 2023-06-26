@@ -17,8 +17,8 @@ module eight_multi_module(a, b, out);
   genvar i, j;
   generate
     //Make partial product
-    for(i=0; i < 8; i = i+1) begin ROW //a[i]
-      for(j=0; j < 8; j = j+1) begin COLUMN //b[j]
+    for(i=0; i < 8; i = i+1) begin :ROW //a[i]
+      for(j=0; j < 8; j = j+1) begin :COLUMN //b[j]
         and_gate AND(
         .a(b[i]),
         .b(a[j]),
