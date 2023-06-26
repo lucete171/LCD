@@ -1,0 +1,36 @@
+//this file is for 8-bit multiplier
+
+module eight_multi_module(a, b, out);
+  
+  input [7:0] a, b;
+  
+  output [7:0] out;
+  
+  wire [7:0] partial_sum [0:7];
+  wire [7:0] ? [0:7];
+  
+  //generate partial product
+  genvar i, j;
+  generate
+    for(i=0; i < 8; i = i+1) begin PART_PROD
+      and_gate AND(
+      .a(),
+      .b(),
+      .out()
+      );
+    end
+    
+    for(j=0; j < 8; j = j+1) begin PART_ADD
+      eight_add_module ADD(
+      .a(),
+      .b(),
+      .sum(),
+      .cout()
+      );
+    end
+  endgenerate
+    
+  
+endmodule
+  
+  
