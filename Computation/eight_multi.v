@@ -24,6 +24,8 @@ module eight_multi_module(a, b, out);
         .b(a[j]),
         .out(multi[i][j])
         );
+      end
+      assign out[i] = sum[i][0];
     end
     
     //Add partial product
