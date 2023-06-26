@@ -15,7 +15,7 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   reg cout;
   
   reg [7:0] multi_out;
-  reg [7:0] sum = 8'b00000000;
+  reg [7:0] sum = 8'd0;
   reg tmp;
   
   wire[7:0] a_bar;
