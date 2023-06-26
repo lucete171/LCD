@@ -13,6 +13,7 @@ module tb_sm;
   
   initial
   begin
+    OUTPUT=1'b0;
     RESET = 1'b0;
     A_IN = 8'd13;
     B_IN = 8'd11;
