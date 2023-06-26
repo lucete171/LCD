@@ -15,7 +15,6 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   reg cout;
   
   reg [7:0] multi_out;
-  reg [7:0] sum = 8'd0;
   reg tmp;
   
   reg [7:0] reg_out;
@@ -32,15 +31,11 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   
   //adder with eight bit adder
   
-  eight_add_module ADD(.a(multi_out), .b(sum), .sum(out), .cout(tmp));
+  eight_add_module ADD(.a(multi_out), .b(out), .out(out), .cout(tmp));
   
-  always @(posedge clk) begin
-    sum <= out;
-  end 
-  
-  
+ 
   //accumulator with full adder
-  //eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
+  eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
 
   
 endmodule
