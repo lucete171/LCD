@@ -5,6 +5,7 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   input [7:0]a;
   input [7:0]b;
   
+  input out;
   input clk;
   input rst;
   
