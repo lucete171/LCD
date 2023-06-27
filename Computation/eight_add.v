@@ -1,6 +1,6 @@
 //this file is for 8-bit adder
 
-module eight_add_module(a, b, sum, cout);
+module eight_bit_add_module(a, b, sum, cout);
   
   input [7:0] a, b;
   
