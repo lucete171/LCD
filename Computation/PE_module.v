@@ -5,7 +5,6 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   input [7:0]a;
   input [7:0]b;
   
-  input out;
   input clk;
   input rst;
   
@@ -16,6 +15,7 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   reg cout;
   
   reg [7:0] multi_out;
+  reg [7:0] sum = 8'd0;
   reg tmp;
   
   reg [7:0] reg_out;
@@ -28,15 +28,15 @@ module PE_module(a, b, clk, rst, a_out, b_out, out);
   d_flip_flop_behavioral_module out_2(.d(b), .clk(clk), .q(b_out), .q_bar(b_bar));
   
   //multiplier with and gate
-  eight_multi_module MUT(.a(a), .b(b), .out(multi_out));
+  eight_bit_multi_module MUT(.a(a), .b(b), .out(multi_out));
   
   //adder with eight bit adder
   
-  eight_add_module ADD(.a(multi_out), .b(out), .out(out), .cout(tmp));
+  eight_bit_add_module ADD(.a(multi_out), .b(out), .sum(out), .cout(tmp));
   
- 
+  
   //accumulator with full adder
-  eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
+  //eight_bit_register_behavioral_module EIGHT_REG(.in(out), .clk(clk), .rst(rst), .out(reg_out));
 
   
 endmodule
