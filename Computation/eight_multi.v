@@ -1,6 +1,6 @@
 //this file is for 8-bit multiplier
 
-module eight_multi_module(a, b, out);
+module eight_bit_multi_module(a, b, out);
   
   input [7:0] a, b;
   
@@ -30,7 +30,7 @@ module eight_multi_module(a, b, out);
     
     //Add partial product
     for(i=0; i < 8; i = i+1) begin :PART_ADD
-      eight_add_module ADD(
+      eight_bit_add_module ADD(
       .a({cout[i],part_sum[i][7:1]}), // cout is position in max element position
       .b(multi[i+1]),
       .sum(part_sum[i+1]),
