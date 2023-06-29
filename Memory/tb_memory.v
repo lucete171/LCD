@@ -94,14 +94,14 @@ module tb_memory;
     ADDR_A0 = 4'd2; ADDR_A1 = 4'd4; ADDR_A2 = 4'd7;
     #20;
     EN_INP = 2'b10; EN_FIL = 2'b10;
-    ADDR_A0 = 4'd5; ADDR_A1 = 4'd3; ADDR_A2 = 4'd2;
+    ADDR_A0 = 4'd5; ADDR_A1 = 4'd3;
     #20;
     EN_INP = 2'b10; EN_FIL = 2'b10;
     ADDR_A0 = 4'd15; ADDR_A1 = 4'd10; ADDR_A2 = 4'd5;
     ADDR_F0 = 4'd15; ADDR_F1 = 4'd10; ADDR_F2 = 4'd5;
     
     //output memory check
-    //
+    //check serial mode
     #20
     EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b11;
     DATA = 8'd12; ADDR_S0 = 2'b00;
@@ -118,6 +118,24 @@ module tb_memory;
     #20
     EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b10;
     ADDR_S0 = 2'b00; ADDR_S1 = 2'b01; ADDR_S2 = 2'b10; ADDR_S3 = 2'b11;
+    
+    //check parallel mode
+    #20
+    EN_S = 2'b00; EN_P1 = 2'b11;
+    DATA = 8'd12; ADDR_P1_0 = 2'b00;
+    #20
+    EN_P1 = 2'b11;
+    DATA = 8'd13; ADDR_P1_1 = 2'b01;
+    #20
+    EN_P1 = 2'b11;
+    DATA = 8'd14; ADDR_P1_2 = 2'b10;
+    #20
+    EN_P1 = 2'b11;
+    DATA = 8'd15; ADDR_P1_3 = 2'b11;
+    
+    #20
+    EN_P1 = 2'b10;
+    ADDR_P1_0 = 2'b00; ADDR_P1_1 = 2'b01; ADDR_P1_2 = 2'b10; ADDR_P1_3 = 2'b11;
     
   end
   
