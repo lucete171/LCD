@@ -8,7 +8,7 @@ output p1_en,	//p1 ctrl:
 output [1:0] p2_en,
 output [2:0] c_sel,//p2 ctrl 
 
-output [2:0] dis_en//display ctrl: dis_en;
+output [3:0] dis_en//display ctrl: dis_en;
 
 output [3:0] addr_a1, addr_a2, addr_a3, //0 is to save
 output [3:0] addr_b1, addr_b2, addr_b3, //0 is to save
@@ -125,7 +125,7 @@ end
 
 always @ (state) //OUTPUT
 begin
-  //initial rst
+  //
 	case (state)
 		INITIAL : begin
 //initial rst
@@ -137,7 +137,9 @@ begin
 		// Serial mode
        // Serial mode
 		SERIAL_START : begin
-		//module initiate 
+		//module initiate
+		  en_FIL<=2'b10;
+		  en_INP<=2'b10; 
 			addr_a1 <= add11;
 			addr_b1 <= bdd33;
 		end
@@ -179,10 +181,11 @@ begin
 	  SERIAL_C11_END : begin
 			addr_a1 <= add12;  
 			addr_b1 <= bdd33;
-			//MemWrite
+			en_S<=2'b11; addr_S0<=2'b11;//C11 Write: CM to data need a wire
 		end
 		// C12 START				
 		SERIAL_C12_START : begin
+		  en_S<=2'b00;
 			mux_reset = 1'b1;
 			addr_a2 <= add13;
 			addr_b2 <= bdd32;
@@ -219,10 +222,11 @@ begin
 		SERIAL_C12_END : begin
 			addr_a1 <= add21;
 			addr_b1 <= bdd33;
-			//MemWrite
+			en_S<=2'b11; addr_S1<=2'b11;//c12 load
 		end
 		// C21 starts				
 		SERIAL_C21_START : begin 
+		  en_S<=2'b00;
 			mux_reset = 1'b1;
 			addr_a2 <= add22;
 			addr_b2<= bdd32;
@@ -258,10 +262,11 @@ begin
     SERIAL_C21_END : begin
 			addr_a1 <= add22;
 			addr_b1 <= bdd33;
-			//MemWrite
+			en_S<=2'b11; addr_S3<=2'b11; //C21 Load
 		end
 		// C22 starts
 		SERIAL_C22_START : begin
+		  en_S<=2'b00;
 			mux_reset = 1'b1;
 		  addr_a2 <= add23;
 			addr_b2 <= bdd32;
@@ -296,15 +301,20 @@ begin
 			addr_b3 <= bdd11;
 		end
 		SERIAL_C22_END : begin
-		//MemWrite
+		  en_S<=2'b11; addr_S4<=2'b11; //C22 Load
 		end
 		SERIAL_END : begin
+		  en_FIL<=2'b00;
+		  en_INP<=2'b00;
+		  en_S<=2'b00;
 		  
-		end				// C22 stored
+		end	
 //////////////////////////////////////////////////////////////////////
 		// Parallel1 mode
 		P1_START : begin //t0
 		//module transition
+			en_FIL<=2'b10;
+		  en_INP<=2'b10;
 		  p1_en=1'b1;
 			addr_b1 =bdd31; addr_b2=bdd32; addr_b3=bdd33;
 		end 
@@ -332,11 +342,11 @@ begin
 		end		
 		8'd82 : begin //t8: get c11
 			addr_a1 =add42; addr_a2=add31; addr_a3=add14;
-		  //MemWrite
+		  en_P1<=2'b11; addr_P1_0<=2'b11;
 		end
 		8'd82 : begin //t9: get c12
 			addr_a1 =add43; addr_a2=add32; addr_a3=add21;
-			//MemWrite
+		  en_P1<=2'b11; addr_P2_0<=2'b11;
 		end
 		8'd82 : begin //t10
 			addr_a1 =add44; addr_a2=add33; addr_a3=add22;
@@ -346,14 +356,16 @@ begin
 		end
 		8'd82 : begin //t12: get c12
 			addr_a1 =add00; addr_a2=add00; addr_a3=add24;
-			//MemWrite
+		  en_P1<=2'b11; addr_P3_0<=2'b11;
 		end
 		8'd82 : begin //t13: get c13
 			out_en3 = 1'b1;
-			//MemWrite
+		  en_P1<=2'b11; addr_P2_4<=2'b11;
 		end
 		P1_END : begin
-      
+      en_P1<=2'b00;
+   			en_FIL<=2'b00;
+		  en_INP<=2'b00;
 		end						// C22 stored
 		
 ///////////////////////////////////////////////////////////////////////
@@ -362,11 +374,12 @@ begin
 		//
 		P2_START : begin //t0
 		//module transition
+		  en_FIL<=2'b10;
+		  en_INP<=2'b10;
 			addr_b1 =bdd32; addr_b2=bdd33;
 		end
-		// C11 starts addr_a1 add bdd
+		// C11 starts 
 		8'd85 : begin //t1
-		  //computing module change maybe next state
 			addr_b1 =bdd31; addr_b2=bdd00;//else at parallel1
       p2_en=2'b11;
 		end
@@ -448,14 +461,15 @@ begin
 		8'd89 : begin //t19: p2_c11
 			addr_a1 =add43; addr_a2=add41;
 			c_sel=3'b100;
-			//MemWrite
+		  en_P2<=2'b11; addr_P2_0<=2'b11;
 		end
-		8'd90 : begin //t20: p3_c12
+		8'd90 : begin //t20: p2_c12
 			addr_a1 =add44; addr_a2=add42;
 			c_sel=3'b101;
-			//MemWrite
+		  en_P2<=2'b11; addr_P2_1<=2'b11;
 		end
 		8'd91 : begin //t21
+		  en_P2<=2'b00;
 			addr_a1 =add00; addr_a2=add43;
 			addr_b1 =bdd00; addr_b2=bdd00; 
 			c_sel=3'b001;
@@ -463,20 +477,22 @@ begin
 		8'd92 : begin //t22: p2_c21
 			addr_a1 =add00; addr_a2=add00;
 			c_sel=3'b111;
-			//MemWrite
+		  en_P2<=2'b11; addr_P2_3<=2'b11;
 		end
 		8'd93 : begin //t23: p2_c22
 			conv_sel=3'b111;
-			//MemWrite			
+		  en_P2<=2'b11; addr_P2_4<=2'b11;	
 		end
 		P2_END : begin //t24 c22 store
-    //control disable
+		  en_FIL<=2'b00;
+		  en_INP<=2'b00;
+		  en_P2<=2'b00;
 		end	
-		
 		
 		//timing consideration
 		DISPLAY_S_C11 : begin
     dis_en=1'b1;
+    
     //memory address for out_conv
 		end
 		DISPLAY_S_C12 : begin
