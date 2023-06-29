@@ -2,33 +2,31 @@ module Controller(
 	input clk,
 	input reset,
 
-//write ctrl
-//module ctrl [2:0]cal_sel	
-//serial ctrl: mux_reset	
-//p1 ctrl: p1_en	
-//p2 ctrl: [1:0] p2_en, [2:0] c_sel
-//display ctrl: dis_en;
+output [2:0] cal_sel,	//CM ctrl	
+output mux_reset, //s ctrl
+output p1_en,	//p1 ctrl: 
+output [1:0] p2_en,
+output [2:0] c_sel,//p2 ctrl 
 
+output [2:0] dis_en//display ctrl: dis_en;
+
+output [3:0] addr_a1, addr_a2, addr_a3, //0 is to save
+output [3:0] addr_b1, addr_b2, addr_b3, //0 is to save
+output [1:0] addr_S0, addr_S1, addr_S2, addr_S3,
+output [1:0] addr_P1_0, addr_P1_1, addr_P1_2, addr_P1_3,
+output [1:0] addr_P2_0, addr_P2_1, addr_P2_2, addr_P2_3,
+  
+output [1:0] en_INP, //enable for INPUT
+output [1:0] en_FIL, //enable for FILTER
+output [1:0] en_S, //enable for SM
+output [1:0] en_P1, //enable for PM1
+output [1:0] en_P2 //enable for PM2
   
 
 );
-//  output [7:0] out_A0, out_A1, out_A2, //matrix data you want
-//  output [7:0] out_F0, out_F1, out_F2, //filter data you want
-//  output [7:0] out_S0, out_S1, out_S2, out_S3, //Serial mode output
-//  output [7:0] out_P1_0, out_P1_1, out_P1_2, out_P1_3, //Parallel mode 1 output
-//  output [7:0] out_P2_0, out_P2_1, out_P2_2, out_P2_3 //Parallel mode 2 output
 
-//  input [3:0] addr_A0, addr_A1, addr_A2, //0 is to save
-// input [3:0] addr_F0, addr_F1, addr_F2, //0 is to save
-//  input [1:0] addr_S0, addr_S1, addr_S2, addr_S3,
-//  input [1:0] addr_P1_0, addr_P1_1, addr_P1_2, addr_P1_3,
-//  input [1:0] addr_P2_0, addr_P2_1, addr_P2_2, addr_P2_3,
-  
-//  input [1:0] en_INP, //enable for INPUT
-//  input [1:0] en_FIL, //enable for FILTER
-// input [1:0] en_S, //enable for SM
-//  input [1:0] en_P1, //enable for PM1
-//  input [1:0] en_P2, //enable for PM2
+
+
 reg [7:0] state;
 reg [7:0] next_state;
 
