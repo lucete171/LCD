@@ -1,3 +1,5 @@
+`timescale 1ns / 1ns
+
 module two_to_one_eight_mux(a, b, s, out);
     input [7:0] a, b;
     input s;

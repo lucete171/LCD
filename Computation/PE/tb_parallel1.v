@@ -35,12 +35,10 @@ module tb_SA_3x3;
   
   initial 
   begin
-    #20 // t0 
-    RST=1'b0;
-    
     #20 // t1
+    RST=1'b0;
     EN1=1'b1;
-    B1 = 8'd1; B2 = 8'd2; B2 = 8'd3;
+    B1 = 8'd1; B2 = 8'd2; B3 = 8'd3;
     
     #20 // t2
     EN1=1'b1;
