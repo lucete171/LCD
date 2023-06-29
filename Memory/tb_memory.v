@@ -90,10 +90,10 @@ module tb_memory;
     EN_INP = 2'b10; EN_FIL = 2'b10;
     ADDR_A0 = 4'd1; ADDR_F0 = 4'd1;
     #20;
-    EN_INP = 2'b10; EN_FIL = 2'b10;
+    EN_INP = 2'b10; EN_FIL = 2'b00;
     ADDR_A0 = 4'd2; ADDR_A1 = 4'd4; ADDR_A2 = 4'd7;
     #20;
-    EN_INP = 2'b10; EN_FIL = 2'b10;
+    EN_INP = 2'b10; EN_FIL = 2'b00;
     ADDR_A0 = 4'd5; ADDR_A1 = 4'd3;
     #20;
     EN_INP = 2'b10; EN_FIL = 2'b10;
@@ -125,13 +125,13 @@ module tb_memory;
     DATA = 8'd12; ADDR_P1_0 = 2'b00;
     #20
     EN_P1 = 2'b11;
-    DATA = 8'd13; ADDR_P1_1 = 2'b01;
+    DATA = 8'd13; ADDR_P1_0 = 2'b01;
     #20
     EN_P1 = 2'b11;
-    DATA = 8'd14; ADDR_P1_2 = 2'b10;
+    DATA = 8'd14; ADDR_P1_0 = 2'b10;
     #20
     EN_P1 = 2'b11;
-    DATA = 8'd15; ADDR_P1_3 = 2'b11;
+    DATA = 8'd15; ADDR_P1_0 = 2'b11;
     
     #20
     EN_P1 = 2'b10;
