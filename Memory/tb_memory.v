@@ -75,7 +75,7 @@ module tb_memory;
     
     // FILTER: 3 X 3
     #20;
-    EN_FIL = 2'b11;
+    EN_FIL = 2'b11; EN_INP = 2'b00;
     for (i = 0; i < 9; i = i + 1)
     begin
       DATA = i + 1;
@@ -85,6 +85,7 @@ module tb_memory;
     end
     /*-----------------------------------------------------------------------------*/
     
+    //read matrix
     #20;
     EN_INP = 2'b10; EN_FIL = 2'b10;
     ADDR_A0 = 4'd1; ADDR_F0 = 4'd1;
@@ -98,6 +99,26 @@ module tb_memory;
     EN_INP = 2'b10; EN_FIL = 2'b10;
     ADDR_A0 = 4'd15; ADDR_A1 = 4'd10; ADDR_A2 = 4'd5;
     ADDR_F0 = 4'd15; ADDR_F1 = 4'd10; ADDR_F2 = 4'd5;
+    
+    //output memory check
+    //
+    #20
+    EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b11;
+    DATA = 8'd12; ADDR_S0 = 2'b00;
+    #20
+    EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b11;
+    DATA = 8'd13; ADDR_S0 = 2'b01;
+    #20
+    EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b11;
+    DATA = 8'd14; ADDR_S0 = 2'b10;
+    #20
+    EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b11;
+    DATA = 8'd15; ADDR_S0 = 2'b11;
+    
+    #20
+    EN_INP = 2'b00; EN_FIL = 2'b00; EN_S = 2'b10;
+    ADDR_S0 = 2'b00; ADDR_S1 = 2'b01; ADDR_S2 = 2'b10; ADDR_S3 = 2'b11;
+    
   end
   
 endmodule
