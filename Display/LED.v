@@ -3,7 +3,7 @@
 
 module seven_seg_display(
     input clk, 
-    input reset_n,
+    input reset,
     input [7:0] c, // 8bit binary c11, c12, c21, c22
     output reg [7:0] digit, //activate=1, others=0
     output reg [6:0] seg_data //7segment code
@@ -15,9 +15,9 @@ module seven_seg_display(
     wire [2:0] LED_activating_counter; //we have 8digit->need 3bit counter
     
     
-    always @(posedge clk or negedge reset_n)  
+    always @(posedge clk or posedge reset)  
     begin
-        if (~reset_n)
+        if (reset)
             refresh_counter <= 0; //reset refresh counter
         else
             refresh_counter <= refresh_counter + 1;
@@ -33,35 +33,35 @@ module seven_seg_display(
     begin
         case(LED_activating_counter)
             3'b000 : begin
-                digit = 8'b10000000;
-                LED_BCD = 4'b0000; //0
+                digit <= 8'b10000000;
+                LED_BCD <= 4'b0000; //0
             end
             3'b001 : begin
-                digit = 8'b01000000;
-                LED_BCD = 4'b0000; //0
+                digit <= 8'b01000000;
+                LED_BCD <= 4'b0000; //0
             end
             3'b010 : begin
-                digit = 8'b00100000;
-                LED_BCD = 4'b0000; //0
+                digit <= 8'b00100000;
+                LED_BCD <= 4'b0000; //0
             end
             3'b011 : begin
-                digit = 8'b00010000;
-                LED_BCD = 4'b0000; //0
+                digit <= 8'b00010000;
+                LED_BCD <= 4'b0000; //0
             end
             3'b100 : begin
-                digit = 8'b00001000;
-                LED_BCD = 4'b0000; //0            
+                digit <= 8'b00001000;
+                LED_BCD <= 4'b0000; //0            
             end
             3'b101 : begin
-                digit = 8'b00000100;
+                digit <= 8'b00000100;
                 LED_BCD <= hundred;        
             end
             3'b110 : begin
-                digit = 8'b00000010;
+                digit <= 8'b00000010;
                 LED_BCD <= ten;
             end
                 3'b111 : begin
-                digit = 8'b00000001;
+                digit <= 8'b00000001;
                 LED_BCD <= one;
             end           
         endcase
