@@ -25,20 +25,21 @@ module memory_module(
 
 //-----------------------------------------INPUT-------------------------------------------//
 //RAM _ INPUT MATRIX
-three_out_ram INPUT_RAM(.data_w(data), .addr0(addr_A0), .addr1(addr_A1), .addr2(addr_A2), .ce(en_INP[1]), .we(en_INP[0]), .clk(clk), .data_r0(out_A0), .data_r1(out_A1), .data_r2(out_A2));
+three_out_ram INPUT_RAM(.data_w(data_w), .addr0(addr_A0), .addr1(addr_A1), .addr2(addr_A2), .ce(en_INP[1]), .we(en_INP[0]), .clk(clk), .data_r0(out_A0), .data_r1(out_A1), .data_r2(out_A2));
 
 //RAM _ FILTER MATRIX
-three_out_ram INPUT_FIl(.data_w(data), .addr0(addr_F0), .addr1(addr_F1), .addr2(addr_F2), .ce(en_FIL[1]), .we(en_FIL[0]), .clk(clk), .data_r0(out_F0), .data_r1(out_F1), .data_r2(out_F2));
+three_out_ram INPUT_FIl(.data_w(data_w), .addr0(addr_F0), .addr1(addr_F1), .addr2(addr_F2), .ce(en_FIL[1]), .we(en_FIL[0]), .clk(clk), .data_r0(out_F0), .data_r1(out_F1), .data_r2(out_F2));
 
 
 //-----------------------------------------OUTPUT-------------------------------------------//
 //RAM _ Output of Serial mode
-out_ram S_OUT(.data_w(data), .addr0(addr_S0), .addr1(addr_S1), .addr2(addr_S2), .addr3(addr_S3), .ce(en_S[1]), .we(en_S[0]), .clk(clk), .data_r0(out_S0), .data_r1(out_S1), .data_r2(out_S2), .data_r3(out_S3));
+out_ram S_OUT(.data_w(data_w), .addr0(addr_S0), .addr1(addr_S1), .addr2(addr_S2), .addr3(addr_S3), .ce(en_S[1]), .we(en_S[0]), .clk(clk), .data_r0(out_S0), .data_r1(out_S1), .data_r2(out_S2), .data_r3(out_S3));
 
 //RAM _ Output of Parallel mode 1
-out_ram P1_OUT(.data_w(data), .addr0(addr_P1_0), .addr1(addr_P1_1), .addr2(addr_P1_2), .addr3(addr_P1_3), .ce(en_P1[1]), .we(en_P1[0]), .clk(clk), .data_r0(out_P1_0), .data_r1(out_P1_1), .data_r2(out_P1_2), .data_r3(out_P1_3));
+out_ram P1_OUT(.data_w(data_w), .addr0(addr_P1_0), .addr1(addr_P1_1), .addr2(addr_P1_2), .addr3(addr_P1_3), .ce(en_P1[1]), .we(en_P1[0]), .clk(clk), .data_r0(out_P1_0), .data_r1(out_P1_1), .data_r2(out_P1_2), .data_r3(out_P1_3));
 
 //RAM _ Output of Parallel mode 2
-out_ram P2_OUT(.data_w(data), .addr0(addr_P2_0), .addr1(addr_P2_1), .addr2(addr_P2_2), .addr3(addr_P2_3), .ce(en_P2[1]), .we(en_P2[0]), .clk(clk), .data_r0(out_P2_0), .data_r1(out_P2_1), .data_r2(out_P2_2), .data_r3(out_P2_3));
+out_ram P2_OUT(.data_w(data_w), .addr0(addr_P2_0), .addr1(addr_P2_1), .addr2(addr_P2_2), .addr3(addr_P2_3), .ce(en_P2[1]), .we(en_P2[0]), .clk(clk), .data_r0(out_P2_0), .data_r1(out_P2_1), .data_r2(out_P2_2), .data_r3(out_P2_3));
 
 endmodule
+
