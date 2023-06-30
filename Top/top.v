@@ -1,64 +1,41 @@
 //This is 3 bit up down counter based on Moore state machine
-
+`timescale 1ns/1ns
 module top_module(clk, out_digit, out_data);
 	input clk;
   output [7:0] out_digit;
 	output [6:0] out_data;
-  wire [7:0] mux_output; //for c in display
-  wire rst;
+  reg rst;
   
   wire [7:0] data; //data input
-  wire [3:0] addr_A0, addr_A1, addr_A2; //0 is to save
-  wire [3:0] addr_F0, addr_F1, addr_F2; //0 is to save
-  wire [1:0] addr_S0, addr_S1, addr_S2, addr_S3;
-  wire [1:0] addr_P1_0, addr_P1_1, addr_P1_2, addr_P1_3;
-  wire [1:0] addr_P2_0, addr_P2_1, addr_P2_2, addr_P2_3;
-  
-  wire [1:0] en_INP; //enable for INPUT
-  wire [1:0] en_FIL; //enable for FILTER
-  wire [1:0] en_S; //enable for SM
-  wire [1:0] en_P1; //enable for PM1
-  wire [1:0] en_P2; //enable for PM2
-  
-  wire [7:0] out_A0, out_A1, out_A2; //matrix data you want
-  wire [7:0] out_F0, out_F1, out_F2; //filter data you want
-  wire [7:0] out_S0, out_S1, out_S2, out_S3; //Serial mode output
-  wire [7:0] out_P1_0, out_P1_1, out_P1_2, out_P1_3; //Parallel mode 1 output
-  wire [7:0] out_P2_0, out_P2_1, out_P2_2, out_P2_3; //Parallel mode 2 output
-  
-  wire [2:0] cal_sel;	//CM ctrl	
-  wire mux_reset; //s ctrl
-  wire p1_en;	//p1 ctrl: 
-  wire [1:0] p2_en;
-  wire [2:0] c_sel;//p2 ctrl 
-  wire [3:0] dis_en;//display ctrl: dis_en;
-  
-  Controller ctrl(.clk(clk), .reset(rst), .cal_sel(cal_sel), .mux_reset(mux_reset), .p1_en(p1_en),	.p2_en(p2_en), .c_sel(c_sel),
-   .dis_en(dis_en), .addr_a1(addr_A0), .addr_a2(addr_A1), .addr_a3(addr_A2), .addr_b1(addr_B0), .addr_b2(addr_B1), ,addr_b3(addr_B2), 
-   .addr_S0(addr_S0), .addr_S1(addr_S1), .addr_S2(addr_S2), .addr_S3(addr_S3), .addr_P1_0(addr_P1_0), .addr_P1_1(addr_P1_1),
-  .addr_P1_2(addr_P1_2), .addr_P1_3(addr_P1_3), .addr_P2_0(addr_P2_0), .addr_P2_1(addr_P2_1), .addr_P2_2(addr_P2_2), .addr_P2_3(addr_P2_3), 
-  .en_INP(en_INP), .en_FIL(en_FIL), .en_S(en_S), .en_P1(en_P1), .en_P2(en_P2));
-  
-  //need mux for output input
-  CM_Serial Serial(.a(), .b(), .clk(clk), .rst(rst), .mux_reset(mux_reset), .out(out_conv));
-  
-  SA_3x3 Parallel1(.clk(clk), .rst(rst), .A_in_1(), .A_in_2(), .A_in_3(), .B_in_1(), .B_in_2(), .B_in_3(), .P1_en(p1_en) , .C_out());
+  wire [7:0] LUT_IN;
+  wire [4:0] add1, add2, add3, bdd1, bdd2, bdd3, cond;
+  wire [1:0] arw, brw, crw; //11: read, 10:write, else: 0 	
+  wire [7:0] a_1, a_2, a_3, b_1, b_2, b_3, dis_out;
 
-  SA_2x2 Parallel2(.clk(clk), .rst(rst), .A_in_1(), .A_in_2(), .B_in_1(), .B_in_2(), .P2_en(p2_en), .c_sel(c_sel), .SAout());
-  
-
-  
-	memory_module memory(.data(out_conv), .clk(clk), .rst(rst), .addr_a1(addr_A0), .addr_a2(addr_A1), .addr_a3(addr_A2), .addr_b1(addr_B0), .addr_b2(addr_B1), ,addr_b3(addr_B2), 
-   .addr_S0(addr_S0), .addr_S1(addr_S1), .addr_S2(addr_S2), .addr_S3(addr_S3), .addr_P1_0(addr_P1_0), .addr_P1_1(addr_P1_1),
-  .addr_P1_2(addr_P1_2), .addr_P1_3(addr_P1_3), .addr_P2_0(addr_P2_0), .addr_P2_1(addr_P2_1), .addr_P2_2(addr_P2_2), .addr_P2_3(addr_P2_3),
-  .en_INP(en_INP), .en_FIL(en_FIL), .en_S(en_S),  .en_P1(en_P1), .en_P2(en_P2), .out_A0(out_A0), .out_A1(out_A1), .out_A2(out_A2), .out_F0(out_F0), .out_F1(out_F1), .out_F2(out_F2),
-   .out_S0(out_S0), .out_S1(out_S1), .out_S2(out_S2), .out_S3(out_S3), .out_P1_0(out_P1_0), .out_P1_1(out_P1_1), .out_P1_2(out_P1_2),
-   .out_P1_3(out_P1_3), .out_P2_0(out_P2_0), .out_P2_1(out_P2_1), .out_P2_2(out_P2_2), .out_P2_3(out_P2_3));
-
-  display_select 12MUX(.d_en(dis_en), .A1(out_S0), .A2(out_S1), .A3(out_S2), .A4(out_S3),
-   .B1(out_P1_0), .B2(out_P1_1), .B3(out_P1_2), .B4(out_P1_3), 
-   .C1(out_P2_0), .C2(out_P2_1), .C3(out_P2_2), .C4(out_P2_3), .out(mux_output));
+  wire [1:0] sel_m; //00: 0, 01: s 10: 3x3 11: 2x2
+  wire mux_reset, P1_en;//filter hold for 3x3
+  wire [2:0] c_sel;//1: acc 00 at c11
+  wire [1:0] P2_en;//filter hold for 2x2 rows
+  wire [7:0] conv_out;
    
-	seven_seg_display display(.clk(clk), .reset(rst), .c(mux_output), .digit(out_digit), .seg_data(out_data));
+  reg [7:0] a11=8'd1, a12=8'd1, a13=8'd1, a14=8'd1, a21=8'd1, a22=8'd1, a23=8'd1, a24=8'd1, a31=8'd1, a32=8'd1, a33=8'd1, a34=8'd1,
+  a41=8'd1, a42=8'd1, a43=8'd1, a44=8'd1, b11=8'd1, b12=8'd1, b13=8'd1, b21=8'd1, b22=8'd1, b23=8'd1,b31=8'd1, b32=8'd1, b33=8'd1;
+  LUT INPUT(.arw(arw), .brw(brw), .add(add1), .bdd(bdd1), .z(LUT_IN));
+  two_to_one_eight_mux MUX(.a(LUT_IN), .b(conv_out), .s(crw[1]), .out(data));
+  Controller ctrl(.clk(clk), .reset(rst), .P1_en(P1_en), .P2_en(P2_en), .mux_reset(mux_reset), .c_sel(c_sel), .sel_m(sel_m), .addr_a1(add1),
+  .addr_a2(add2), .addr_a3(add3), .addr_b1(bdd1), .addr_b2(bdd2), .addr_b3(bdd3), .cond(cond), .arw(arw), .brw(brw), .crw(crw));
+  
+  computation_module CM(.clk(clk), .rst(rst), .a_1(a_1), .a_2(a_2), .a_3(a_3), .b_1(b_1), .b_2(b_2), .b_3(b_3), .P1_en(P1_en), .P2_en(P2_en),
+.mux_reset(mux_reset), .c_sel(c_sel), .sel_m(sel_m), .out(conv_out));
+
+  //need mux for output input for matrix input  
+  memory_module MM(.clk(clk), .rst(rst), .IN(data), .add1(add1), .add2(add2), .add3(add3), .bdd1(bdd1), .bdd2(bdd2), .bdd3(bdd3), .cond(cond), .arw(arw), .brw(brw), .crw(crw),
+   .a_1(a_1), .a_2(a_2), .a_3(a_3), .b_1(b_1), .b_2(b_2), .b_3(b_3), .dis_out(dis_out));
+
+	
+  seven_seg_display display(.clk(clk), .reset(rst), .c(dis_out), .digit(out_digit), .seg_data(out_data));
+
+initial begin rst=1'b1; #20 rst=1'b0; end
+
 endmodule
 
