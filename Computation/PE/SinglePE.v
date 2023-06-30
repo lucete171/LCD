@@ -27,6 +27,5 @@ module singlePE(clk, rst, in_a,in_b,b_en, p_sum,out_a,out_b,out_conv);
      end
 
     multiplier m1(out_a, out_b, a_product_b);
-
     eight_bit_adder a1(pre_out,a_product_b,1'b0,out_conv,cout);
 endmodule
